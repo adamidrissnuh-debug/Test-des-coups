@@ -54,6 +54,8 @@
   #stimSub { font-size: 18px; color: var(--muted); font-weight: 700; }
   .hold { width: min(70%, 320px); height: 10px; border-radius: 5px; background: #2a261d; overflow: hidden; }
   .hold i { display: block; height: 100%; background: linear-gradient(90deg, #ffe9a0, #f5be38); transform-origin: left; transform: scaleX(0); transition: transform .1s linear; }
+  #run.placing .rec { visibility: hidden; }
+  #run.placing #runCam { width: min(100%, calc((100dvh - 300px) * .75)); border-radius: 22px; }
   #runCam { width: 110px; aspect-ratio: 3 / 4; border-radius: 14px; }
   .flash { animation: flash .25s ease-out; }
   @keyframes flash { from { transform: scale(1.12); opacity: .4; } to { transform: scale(1); opacity: 1; } }
@@ -65,7 +67,7 @@
   footer { font-size: 11px; color: #6f6a60; text-align: center; }
   footer a { color: inherit; }
 </style>
-  <script type="module" crossorigin src="./assets/index-lr_hkYZE.js"></script>
+  <script type="module" crossorigin src="./assets/index-BBmKIBfC.js"></script>
 </head>
 <body>
   <!-- 1. Accueil -->
@@ -86,6 +88,10 @@
       <div class="field">En boxe, tu es…
         <div class="seg" data-key="level"><button data-v="debutant">Débutant(e)</button><button data-v="confirme">Confirmé(e)</button></div>
       </div>
+      <div class="field">Quelle série ?
+        <div class="seg" data-key="series"><button data-v="single">Coups seuls</button><button data-v="combo">Enchaînements</button></div>
+        <span id="seriesHint" style="font-size:13px"></span>
+      </div>
       <label class="check"><input id="consent" type="checkbox"> J'accepte d'envoyer ces points (sans image, avec mon pseudo seulement) par mail au créateur de GoReactive, pour améliorer l'app.</label>
     </div>
     <div class="card help">
@@ -93,24 +99,10 @@
       <div><b>Crochet</b><span>le poing tourne à l'horizontale, coude levé.</span></div>
       <div><b>Uppercut</b><span>le poing monte de bas en haut, vers le menton.</span></div>
     </div>
+    <p style="font-size:13px">Pose le téléphone debout contre un verre ou un livre, à hauteur de poitrine, un peu basculé en arrière. Appuie sur Commencer puis recule : la série démarre toute seule dès qu'on te voit en entier.</p>
     <div id="homeErr" class="err hidden"></div>
     <button id="go" class="btn" disabled>Commencer</button>
     <footer>Détection : MediaPipe (Google, <a href="./LICENCE-MediaPipe-Apache-2.0.txt">Apache 2.0</a>), sur ton téléphone. Rien n'est envoyé tant que tu n'appuies pas sur « Envoyer ».</footer>
-  </section>
-
-  <!-- 2. Mise en place + choix de la série -->
-  <section id="setup" class="screen hidden">
-    <div class="lab" id="loadState">Chargement de la détection…</div>
-    <div class="camwrap" id="setupCam"></div>
-    <div class="advice" id="advice">Pose le téléphone debout, à hauteur de poitrine</div>
-    <div class="pills"><span class="pill" id="pTilt">TÉLÉPHONE</span><span class="pill" id="pDist">DISTANCE</span><span class="pill" id="pBody">CORPS</span><span class="pill mono" id="pFps">— I/S</span></div>
-    <p style="text-align:center; font-size:13px">Contre un verre ou un livre, un peu basculé en arrière. Choisis une série, puis recule jusqu'à voir ta tête, tes bras et tes hanches : elle démarre toute seule quand tu es en place.</p>
-    <div class="series">
-      <button data-kind="single"><b>1 · Coups seuls</b><span>20 coups annoncés à voix haute, un par un.</span><span class="done" data-done="single"></span></button>
-      <button data-kind="combo"><b>2 · Enchaînements</b><span>10 enchaînements de 2-3 coups : 5 à ton rythme, puis 5 le plus vite possible.</span><span class="done" data-done="combo"></span></button>
-      <button data-kind="idle"><b>3 · Sans frapper</b><span>20 secondes en garde, tu bouges un peu mais tu ne frappes pas.</span><span class="done" data-done="idle"></span></button>
-    </div>
-    <div id="setupErr" class="err hidden"></div>
   </section>
 
   <!-- 3. Série en cours -->
@@ -127,7 +119,8 @@
     <h1 id="doneTitle"></h1>
     <p>Envoie-la tout de suite : elle n'est pas gardée si tu fermes la page.</p>
     <button id="send" class="btn">Envoyer</button>
-    <button id="next" class="btn ghost">Série suivante</button>
+    <div class="lab" style="margin-top:8px">Encore une série ?</div>
+    <div class="seg"><button data-again="single">Coups seuls</button><button data-again="combo">Enchaînements</button></div>
     <p id="doneMsg" class="hidden" style="text-align:center; color: var(--text)"></p>
   </section>
 </body>
