@@ -58,11 +58,12 @@
   .help { display: grid; gap: 8px; }
   .help div { display: grid; grid-template-columns: 92px 1fr; gap: 10px; font-size: 14px; color: var(--muted); }
   .help b { color: var(--text); text-transform: uppercase; font-size: 13px; letter-spacing: .05em; }
-  .err { color: var(--bad); font-weight: 700; font-size: 15px; text-align: center; }
+  .err { color: var(--bad); font-weight: 700; font-size: 15px; text-align: center; white-space: pre-line; }
+  #homeErr { text-align: left; font-weight: 600; line-height: 1.45; background: #1f0f10; border: 1px solid #5c2326; border-radius: 16px; padding: 14px; }
   footer { font-size: 11px; color: #6f6a60; text-align: center; }
   footer a { color: inherit; }
 </style>
-  <script type="module" crossorigin src="./assets/index-Db2-_i3B.js"></script>
+  <script type="module" crossorigin src="./assets/index-ucdEU2oQ.js"></script>
 </head>
 <body>
   <!-- 1. Accueil -->
@@ -90,8 +91,8 @@
       <div><b>Crochet</b><span>le poing tourne à l'horizontale, coude levé.</span></div>
       <div><b>Uppercut</b><span>le poing monte de bas en haut, vers le menton.</span></div>
     </div>
-    <button id="go" class="btn" disabled>Commencer</button>
     <div id="homeErr" class="err hidden"></div>
+    <button id="go" class="btn" disabled>Commencer</button>
     <footer>Détection : MediaPipe (Google, <a href="./LICENCE-MediaPipe-Apache-2.0.txt">Apache 2.0</a>), sur ton téléphone. Rien n'est envoyé tant que tu n'appuies pas sur « Envoyer ».</footer>
   </section>
 
