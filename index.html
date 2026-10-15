@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#08080a">
+<meta name="robots" content="noindex">
+<title>GoReactive · Collecte</title>
+<link rel="icon" href="./assets/icon-x4spmRUc.svg" type="image/svg+xml">
+<style>
+  :root { --bg: #08080a; --card: #121216; --line: #2a261d; --text: #f4f1ea; --muted: #a39d90; --acc: #e8b64c; --acc-2: #f5be38; --bad: #f87171; --good: #34d399; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+  body { min-height: 100dvh; padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)); }
+  .mono { font-family: ui-monospace, 'SF Mono', Menlo, monospace; }
+  .lab { font: 800 11px/1.2 ui-monospace, 'SF Mono', Menlo, monospace; letter-spacing: .22em; text-transform: uppercase; color: var(--acc); }
+  .screen { max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+  .hidden { display: none !important; }
+  h1 { margin: 0; font-size: 30px; font-weight: 900; font-style: italic; letter-spacing: -.01em; }
+  h1 span { color: var(--acc); }
+  p { margin: 0; color: var(--muted); line-height: 1.45; font-size: 15px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  label.field { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
+  input[type=text] { min-height: 48px; border-radius: 14px; border: 1px solid var(--line); background: #0d0d10; color: var(--text); font-size: 17px; padding: 0 14px; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .seg button { min-height: 48px; border-radius: 14px; border: 1px solid var(--line); background: #0d0d10; color: var(--text); font-weight: 800; font-size: 15px; }
+  .seg button[aria-pressed=true] { border-color: var(--acc); background: #2a210c; color: var(--acc); }
+  .check { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--text); line-height: 1.4; }
+  .check input { width: 24px; height: 24px; flex: none; accent-color: var(--acc); margin-top: 1px; }
+  .btn { min-height: 56px; border: 0; border-radius: 16px; font-weight: 900; font-size: 17px; letter-spacing: .06em; text-transform: uppercase; color: #140e02; background: linear-gradient(135deg, #ffe9a0, #f5be38 50%, #c47f0e); }
+  .btn:active, .seg button:active, .series button:active { transform: scaleX(1.03) scaleY(.94); }
+  .btn:disabled { opacity: .35; }
+  .btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--line); }
+  .btn.small { min-height: 48px; font-size: 14px; }
+  .series { display: grid; gap: 10px; }
+  .series button { min-height: 72px; border-radius: 18px; border: 1px solid var(--line); background: var(--card); color: var(--text); text-align: left; padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; }
+  .series button b { font-size: 17px; font-weight: 900; text-transform: uppercase; letter-spacing: .04em; }
+  .series button span { font-size: 13px; color: var(--muted); }
+  .series button .done { color: var(--good); font-weight: 800; }
+  .camwrap { position: relative; width: min(100%, calc((100dvh - 330px) * .75)); min-width: 200px; aspect-ratio: 3 / 4; margin: 0 auto; border-radius: 22px; overflow: hidden; background: #000; border: 1px solid var(--line); }
+  .camwrap video, .camwrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .pill { font: 800 12px/1 ui-monospace, Menlo, monospace; letter-spacing: .08em; padding: 9px 12px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+  .pill.ok { color: var(--good); border-color: #1e5a44; }
+  .pill.ko { color: var(--acc); border-color: #6b5320; }
+  .advice { text-align: center; font-size: 20px; font-weight: 900; min-height: 52px; }
+  #run { position: fixed; inset: 0; padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)); background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 12px; }
+  #run .top { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+  #run .rec { color: var(--bad); }
+  #stim { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 10px; width: 100%; }
+  #stimBig { font-size: clamp(44px, 14vw, 96px); font-weight: 900; font-style: italic; line-height: .95; text-transform: uppercase; white-space: pre-line; }
+  #stimBig.combo { font-size: clamp(32px, 10vw, 64px); line-height: 1.05; }
+  #stimBig .n { display: block; font-size: .45em; color: var(--muted); font-style: normal; }
+  #stimSub { font-size: 18px; color: var(--muted); font-weight: 700; }
+  #runCam { width: 110px; aspect-ratio: 3 / 4; border-radius: 14px; }
+  .flash { animation: flash .25s ease-out; }
+  @keyframes flash { from { transform: scale(1.12); opacity: .4; } to { transform: scale(1); opacity: 1; } }
+  .help { display: grid; gap: 8px; }
+  .help div { display: grid; grid-template-columns: 92px 1fr; gap: 10px; font-size: 14px; color: var(--muted); }
+  .help b { color: var(--text); text-transform: uppercase; font-size: 13px; letter-spacing: .05em; }
+  .err { color: var(--bad); font-weight: 700; font-size: 15px; text-align: center; }
+  footer { font-size: 11px; color: #6f6a60; text-align: center; }
+  footer a { color: inherit; }
+</style>
+  <script type="module" crossorigin src="./assets/index-CI4Kd4iP.js"></script>
+</head>
+<body>
+  <!-- 1. Accueil -->
+  <section id="home" class="screen">
+    <div style="display:flex; align-items:center; gap:12px">
+      <img src="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20256%20256'%3e%3ctitle%3eGoReactive%3c/title%3e%3cdefs%3e%3clinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3e%3cstop%20offset='0'%20stop-color='%23FFE9A0'/%3e%3cstop%20offset='0.45'%20stop-color='%23F5BE38'/%3e%3cstop%20offset='1'%20stop-color='%23C47F0E'/%3e%3c/linearGradient%3e%3c/defs%3e%3cpolygon%20points='198.5,59.9%20194.7,56.2%20190.8,52.8%20186.7,49.5%20182.4,46.5%20178.0,43.7%20173.4,41.1%20168.6,38.8%20163.8,36.8%20158.9,35.0%20153.8,33.5%20148.7,32.2%20148.7,32.2%2079.1,14.1%20103.0,33.3%2097.4,34.9%2092.0,36.9%2092.0,36.9%2024.0,60.5%2054.5,63.2%2050.8,67.6%2047.4,72.3%2047.4,72.3%204.0,129.7%2030.9,115.0%2030.3,120.7%2030.0,126.5%2030.0,126.5%2025.9,198.4%2040.0,171.2%2042.7,176.3%2045.7,181.2%2045.7,181.2%2082.3,243.3%2078.9,212.8%2083.9,215.5%2089.2,218.0%2089.2,218.0%20154.1,249.2%20134.3,225.8%20140.1,225.3%20145.8,224.4%20145.8,224.4%20217.1,214.3%20187.6,205.8%20192.1,202.1%20196.3,198.2%20196.3,198.2%20200.0,194.5%20203.5,190.5%20206.7,186.4%20209.7,182.1%20212.5,177.6%20215.0,173.0%20217.3,168.3%20219.4,163.5%20221.1,158.5%20222.6,153.5%20223.9,148.4%20184.7,140.1%20184.0,143.0%20183.2,145.9%20182.1,148.8%20181.0,151.6%20179.7,154.4%20178.2,157.1%20176.6,159.6%20174.9,162.2%20173.0,164.6%20171.0,166.9%20168.9,169.1%20166.7,171.2%20164.4,173.2%20162.0,175.0%20159.5,176.7%20156.9,178.3%20154.2,179.8%20151.4,181.1%20148.6,182.2%20145.7,183.2%20142.8,184.1%20139.8,184.8%20136.8,185.3%20133.8,185.7%20130.8,185.9%20127.7,186.0%20124.7,185.9%20121.7,185.7%20118.6,185.2%20115.6,184.7%20112.7,183.9%20109.8,183.1%20106.9,182.0%20104.1,180.8%20101.4,179.5%2098.7,178.0%2096.1,176.4%2093.6,174.7%2091.2,172.8%2088.9,170.8%2086.7,168.7%2084.6,166.5%2082.7,164.2%2080.8,161.7%2079.1,159.2%2077.5,156.6%2076.1,153.9%2074.8,151.2%2073.7,148.3%2072.7,145.4%2071.8,142.5%2071.2,139.5%2070.6,136.5%2070.3,133.5%2070.1,130.5%2070.0,127.4%2070.1,124.4%2070.4,121.4%2070.8,118.3%2071.4,115.4%2072.1,112.4%2073.0,109.5%2074.1,106.6%2075.3,103.8%2076.6,101.1%2078.1,98.4%2079.7,95.8%2081.5,93.4%2083.4,91.0%2085.4,88.7%2087.5,86.5%2089.7,84.4%2092.1,82.5%2094.5,80.6%2097.0,79.0%2099.7,77.4%20102.4,76.0%20105.1,74.7%20108.0,73.6%20110.8,72.6%20113.8,71.8%20116.7,71.1%20119.7,70.6%20122.8,70.2%20125.8,70.0%20128.9,70.0%20131.9,70.1%20134.9,70.4%20138.0,70.9%20140.9,71.5%20143.9,72.2%20146.8,73.1%20149.7,74.2%20152.4,75.4%20155.2,76.8%20157.8,78.3%20160.4,79.9%20162.9,81.7%20165.3,83.6%20167.5,85.6%20169.7,87.7'%20fill='url(%23g)'/%3e%3cpolygon%20points='223.9,108.0%20148.0,108.0%20130.0,128.0%20148.0,148.0%20223.9,148.0'%20fill='url(%23g)'/%3e%3c/svg%3e" width="44" height="44" alt="">
+      <h1>Go<span>Reactive</span></h1>
+    </div>
+    <div class="lab">Collecte de mouvements</div>
+    <p>Merci de m'aider ! Tu vas donner quelques coups de boxe devant la caméra de ton téléphone. La page n'enregistre <b style="color:var(--text)">aucune image ni vidéo</b> : seulement la position de tes épaules, coudes et poignets (des points), pour apprendre à l'app à reconnaître les coups.</p>
+    <div class="card">
+      <label class="field">Un pseudo (pas ton vrai nom)
+        <input id="pseudo" type="text" maxlength="24" autocomplete="off" placeholder="ex. Lili">
+      </label>
+      <div class="field">Tu écris de quelle main ?
+        <div class="seg" data-key="hand"><button data-v="droitier">Droite</button><button data-v="gaucher">Gauche</button></div>
+      </div>
+      <div class="field">En boxe, tu es…
+        <div class="seg" data-key="level"><button data-v="debutant">Débutant(e)</button><button data-v="confirme">Confirmé(e)</button></div>
+      </div>
+      <label class="check"><input id="consent" type="checkbox"> J'accepte d'envoyer ces points (sans image, avec mon pseudo seulement) par mail au créateur de GoReactive, pour améliorer l'app.</label>
+    </div>
+    <div class="card help">
+      <div><b>Direct</b><span>le poing part tout droit vers le visage, bras tendu.</span></div>
+      <div><b>Crochet</b><span>le poing tourne à l'horizontale, coude levé.</span></div>
+      <div><b>Uppercut</b><span>le poing monte de bas en haut, vers le menton.</span></div>
+    </div>
+    <button id="go" class="btn" disabled>Commencer</button>
+    <div id="homeErr" class="err hidden"></div>
+    <footer>Détection : MediaPipe (Google, <a href="./LICENCE-MediaPipe-Apache-2.0.txt">Apache 2.0</a>), sur ton téléphone. Rien n'est envoyé tant que tu n'appuies pas sur « Envoyer ».</footer>
+  </section>
+
+  <!-- 2. Mise en place + choix de la série -->
+  <section id="setup" class="screen hidden">
+    <div class="lab" id="loadState">Chargement de la détection…</div>
+    <div class="camwrap" id="setupCam"></div>
+    <div class="advice" id="advice">Pose le téléphone debout, à hauteur de poitrine</div>
+    <div class="pills"><span class="pill" id="pTilt">TÉLÉPHONE</span><span class="pill" id="pDist">DISTANCE</span><span class="pill" id="pBody">CORPS</span><span class="pill mono" id="pFps">— I/S</span></div>
+    <p style="text-align:center; font-size:13px">Contre un verre ou un livre, un peu basculé en arrière. Recule jusqu'à voir ta tête, tes bras et tes hanches.</p>
+    <div class="series">
+      <button data-kind="single"><b>1 · Coups seuls</b><span>20 coups annoncés à voix haute, un par un.</span><span class="done" data-done="single"></span></button>
+      <button data-kind="combo"><b>2 · Enchaînements</b><span>10 enchaînements de 2-3 coups : 5 à ton rythme, puis 5 le plus vite possible.</span><span class="done" data-done="combo"></span></button>
+      <button data-kind="idle"><b>3 · Sans frapper</b><span>20 secondes en garde, tu bouges un peu mais tu ne frappes pas.</span><span class="done" data-done="idle"></span></button>
+    </div>
+    <div id="setupErr" class="err hidden"></div>
+  </section>
+
+  <!-- 3. Série en cours -->
+  <section id="run" class="hidden">
+    <div class="top"><span class="lab rec">● REC</span><span class="lab mono" id="runCount"></span></div>
+    <div id="stim"><div id="stimBig"></div><div id="stimSub"></div></div>
+    <div class="camwrap" id="runCam"></div>
+    <button id="stop" class="btn ghost small" style="width:100%">Arrêter</button>
+  </section>
+
+  <!-- 4. Fin de série -->
+  <section id="done" class="screen hidden">
+    <div class="lab">Série enregistrée</div>
+    <h1 id="doneTitle"></h1>
+    <p>Envoie-la tout de suite : elle n'est pas gardée si tu fermes la page.</p>
+    <button id="send" class="btn">Envoyer</button>
+    <button id="next" class="btn ghost">Série suivante</button>
+    <div id="doneMsg" class="lab hidden" style="text-align:center"></div>
+  </section>
+</body>
+</html>
