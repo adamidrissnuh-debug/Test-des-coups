@@ -52,6 +52,8 @@
   #stimBig.combo { font-size: clamp(32px, 10vw, 64px); line-height: 1.05; }
   #stimBig .n { display: block; font-size: .45em; color: var(--muted); font-style: normal; }
   #stimSub { font-size: 18px; color: var(--muted); font-weight: 700; }
+  .hold { width: min(70%, 320px); height: 10px; border-radius: 5px; background: #2a261d; overflow: hidden; }
+  .hold i { display: block; height: 100%; background: linear-gradient(90deg, #ffe9a0, #f5be38); transform-origin: left; transform: scaleX(0); transition: transform .1s linear; }
   #runCam { width: 110px; aspect-ratio: 3 / 4; border-radius: 14px; }
   .flash { animation: flash .25s ease-out; }
   @keyframes flash { from { transform: scale(1.12); opacity: .4; } to { transform: scale(1); opacity: 1; } }
@@ -63,7 +65,7 @@
   footer { font-size: 11px; color: #6f6a60; text-align: center; }
   footer a { color: inherit; }
 </style>
-  <script type="module" crossorigin src="./assets/index-DWYjhqsE.js"></script>
+  <script type="module" crossorigin src="./assets/index-lr_hkYZE.js"></script>
 </head>
 <body>
   <!-- 1. Accueil -->
@@ -102,7 +104,7 @@
     <div class="camwrap" id="setupCam"></div>
     <div class="advice" id="advice">Pose le téléphone debout, à hauteur de poitrine</div>
     <div class="pills"><span class="pill" id="pTilt">TÉLÉPHONE</span><span class="pill" id="pDist">DISTANCE</span><span class="pill" id="pBody">CORPS</span><span class="pill mono" id="pFps">— I/S</span></div>
-    <p style="text-align:center; font-size:13px">Contre un verre ou un livre, un peu basculé en arrière. Recule jusqu'à voir ta tête, tes bras et tes hanches.</p>
+    <p style="text-align:center; font-size:13px">Contre un verre ou un livre, un peu basculé en arrière. Choisis une série, puis recule jusqu'à voir ta tête, tes bras et tes hanches : elle démarre toute seule quand tu es en place.</p>
     <div class="series">
       <button data-kind="single"><b>1 · Coups seuls</b><span>20 coups annoncés à voix haute, un par un.</span><span class="done" data-done="single"></span></button>
       <button data-kind="combo"><b>2 · Enchaînements</b><span>10 enchaînements de 2-3 coups : 5 à ton rythme, puis 5 le plus vite possible.</span><span class="done" data-done="combo"></span></button>
@@ -114,7 +116,7 @@
   <!-- 3. Série en cours -->
   <section id="run" class="hidden">
     <div class="top"><span class="lab rec">● REC</span><span class="lab mono" id="runCount"></span></div>
-    <div id="stim"><div id="stimBig"></div><div id="stimSub"></div></div>
+    <div id="stim"><div id="stimBig"></div><div id="stimSub"></div><div id="hold" class="hold hidden"><i></i></div></div>
     <div class="camwrap" id="runCam"></div>
     <button id="stop" class="btn ghost small" style="width:100%">Arrêter</button>
   </section>
@@ -126,7 +128,7 @@
     <p>Envoie-la tout de suite : elle n'est pas gardée si tu fermes la page.</p>
     <button id="send" class="btn">Envoyer</button>
     <button id="next" class="btn ghost">Série suivante</button>
-    <div id="doneMsg" class="lab hidden" style="text-align:center"></div>
+    <p id="doneMsg" class="hidden" style="text-align:center; color: var(--text)"></p>
   </section>
 </body>
 </html>
