@@ -23,6 +23,7 @@
   label.field { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
   input[type=text] { min-height: 48px; border-radius: 14px; border: 1px solid var(--line); background: #0d0d10; color: var(--text); font-size: 17px; padding: 0 14px; }
   .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .seg3 { grid-template-columns: 1fr 1fr 1fr; }
   .seg button { min-height: 48px; border-radius: 14px; border: 1px solid var(--line); background: #0d0d10; color: var(--text); font-weight: 800; font-size: 15px; }
   .seg button[aria-pressed=true] { border-color: var(--acc); background: #2a210c; color: var(--acc); }
   .check { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--text); line-height: 1.4; }
@@ -67,7 +68,7 @@
   footer { font-size: 11px; color: #6f6a60; text-align: center; }
   footer a { color: inherit; }
 </style>
-  <script type="module" crossorigin src="./assets/index-C5Z12jeO.js"></script>
+  <script type="module" crossorigin src="./assets/index-BzDQw3Ci.js"></script>
 </head>
 <body>
   <!-- 1. Accueil -->
@@ -84,6 +85,9 @@
       </label>
       <div class="field">Tu écris de quelle main ?
         <div class="seg" data-key="hand"><button data-v="droitier">Droite</button><button data-v="gaucher">Gauche</button></div>
+      </div>
+      <div class="field">Ton âge
+        <div class="seg seg3" data-key="age"><button data-v="u15">- de 15</button><button data-v="15-29">15-29</button><button data-v="30-44">30-44</button><button data-v="45-59">45-59</button><button data-v="60+">60 et +</button></div>
       </div>
       <div class="field">En boxe, tu es…
         <div class="seg" data-key="level"><button data-v="debutant">Débutant(e)</button><button data-v="confirme">Confirmé(e)</button></div>
